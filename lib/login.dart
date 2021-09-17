@@ -1,9 +1,15 @@
+import 'package:driver/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
+
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController emailEditingController = TextEditingController();
+  final TextEditingController passwordEditingController = TextEditingController();
+
+  final UserService userService = UserService();
 
   LoginScreen({Key? key}) : super(key: key);
 
@@ -25,12 +31,14 @@ class LoginScreen extends StatelessWidget {
                   description: "Enter your email",
                   icon: Icons.person_outline,
                   validator: emailValidator,
+                  editingController: emailEditingController,
                 ),
                 TextField(
                   title: "Password",
                   description: "Enter your password",
                   icon: Icons.lock_open,
                   validator: passwordValidator,
+                  editingController: passwordEditingController,
                 ),
                 LoginButton(
                   onPressed: login,
@@ -59,10 +67,17 @@ class LoginScreen extends StatelessWidget {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+
+    String email = emailEditingController.text;
+    String password = passwordEditingController.text;
+
+    await userService.login(email, password);
   }
 }
 
 class Logo extends StatelessWidget {
+  const Logo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -81,13 +96,15 @@ class TextField extends StatelessWidget {
   final String description;
   final IconData icon;
   final FormFieldValidator<String> validator;
+  final TextEditingController editingController;
 
   const TextField(
       {Key? key,
       required this.title,
       required this.description,
       required this.icon,
-      required this.validator})
+      required this.validator,
+      required this.editingController})
       : super(key: key);
 
   @override
@@ -130,7 +147,9 @@ class TextField extends StatelessWidget {
               ),
               Expanded(
                 child: TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: validator,
+                  controller: editingController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: description,
