@@ -1,3 +1,5 @@
+import 'package:camera/camera.dart';
+import 'package:driver/screens/camera.dart';
 import 'package:driver/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,6 +74,12 @@ class LoginScreen extends StatelessWidget {
     String password = passwordEditingController.text;
 
     await userService.login(email, password);
+
+    var cameras = await availableCameras();
+    Navigator.pushReplacement(
+      _formKey.currentContext!,
+      MaterialPageRoute(builder: (context) => CameraScreen(cameras: cameras,)),
+    );
   }
 }
 
