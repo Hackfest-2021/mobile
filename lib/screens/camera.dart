@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,7 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen>
     with WidgetsBindingObserver {
   late CameraController controller;
+  late Timer timer;
 
   @override
   void initState() {
@@ -23,12 +26,16 @@ class _CameraScreenState extends State<CameraScreen>
         return;
       }
       setState(() {});
+
+      const oneSec = Duration(seconds: 5);
+      timer = Timer.periodic(oneSec, (Timer t) => takePicture());
     });
   }
 
   @override
   void dispose() {
     controller.dispose();
+    timer.cancel();
     super.dispose();
   }
 
@@ -60,14 +67,8 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
-
   Future<String> takePicture() async {
-    if (!controller.value.isInitialized) {
-      return "";
-    }
-
-    if (controller.value.isTakingPicture) {
+    if (!controller.value.isInitialized || controller.value.isTakingPicture) {
       return "";
     }
 
