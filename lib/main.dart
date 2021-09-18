@@ -11,22 +11,22 @@ import 'screens/login.dart';
 //
 // }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
-}
 
 void main() {
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   static const primaryColorHex = 0xFFee424a;
 
   String? token;
-
-  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
           return app;
         }
 
-        return app;
+        return Container();
 
         // Otherwise, show something whilst waiting for initialization to complete
         // return Loading();
@@ -64,9 +64,27 @@ class MyApp extends StatelessWidget {
     );
   }
 
+  Future<void> setupInteractedMessage() async {
+    RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    // if (message.data['type'] == 'alert') {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PollScreen()));
+    // }
+  }
+
   initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     this.token = await FirebaseMessaging.instance.getToken();
+
+    await setupInteractedMessage();
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'high_importance_channel', // id
