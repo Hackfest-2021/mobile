@@ -32,15 +32,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     const primaryColor = Color(primaryColorHex);
 
-    var app = MaterialApp(
-      title: 'Safe Rides',
-      theme: ThemeData(
-          splashColor: primaryColor,
-          primarySwatch: createMaterialColor(primaryColor)
-          // Colors.blue,
-          ),
-      home: LoginScreen(),
-    );
 
     return FutureBuilder(
       // Initialize FlutterFire:
@@ -53,7 +44,15 @@ class _MyAppState extends State<MyApp> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return app;
+          return MaterialApp(
+      title: 'Safe Rides',
+      theme: ThemeData(
+          splashColor: primaryColor,
+          primarySwatch: createMaterialColor(primaryColor)
+          // Colors.blue,
+          ),
+      home: LoginScreen(token: token ?? "dfds",),
+    );
         }
 
         return Container();
