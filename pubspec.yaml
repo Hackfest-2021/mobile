@@ -15,6 +15,13 @@ dependencies:
   email_validator: '^2.0.1'
   camera: ^0.9.3
   path_provider: ^2.0.4
+  socket_io_client: ^1.0.1
+#  web_socket_channel: 1..0
+  websocket: ^0.0.5
+  websocket_channel_wrapper: ^1.1.4
+  image: ^3.0.4
+
+
 
 dev_dependencies:
   flutter_test:

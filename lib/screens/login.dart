@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:driver/screens/camera.dart';
+import 'package:driver/services/socket_io_wrapper.dart';
 import 'package:driver/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,8 +14,11 @@ class LoginScreen extends StatelessWidget {
 
   final UserService userService = UserService();
 
-  LoginScreen({Key? key}) : super(key: key);
-
+  LoginScreen({Key? key}) : super(key: key){
+    print('connecting to socket');
+    // SocketIOWrapper sw = SocketIOWrapper();
+    print('connected to socket');
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
