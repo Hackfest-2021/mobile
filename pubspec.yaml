@@ -20,7 +20,9 @@ dependencies:
   websocket: ^0.0.5
   websocket_channel_wrapper: ^1.1.4
   image: ^3.0.4
-
+  firebase_messaging: ^10.0.7
+  firebase_core: ^1.6.0
+  flutter_local_notifications: ^8.2.0
 
 
 dev_dependencies:

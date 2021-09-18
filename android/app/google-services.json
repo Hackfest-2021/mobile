@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "907736691540",
+    "project_id": "safeti-23e65",
+    "storage_bucket": "safeti-23e65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907736691540:android:0312a8464145d637880ec1",
+        "android_client_info": {
+          "package_name": "com.swvl.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907736691540-miqnqb9qa0ihglp2cq77rpkbbkrh6ae0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.swvl.driver",
+            "certificate_hash": "1e2967e1e96e9b6202b9923a026c9ffb8e62fcb5"
+          }
+        },
+        {
+          "client_id": "907736691540-fo06e6fg59vhfvdfr1g0cau84s464k14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZry9zMa9NODGQQlzfAq80YHvItsdvRlk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907736691540-fo06e6fg59vhfvdfr1g0cau84s464k14.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
