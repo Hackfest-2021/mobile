@@ -19,13 +19,12 @@ class SocketIOWrapper {
     channel.sink.add(json.encode({
       "action": "subscribe_to_DeviceSettings",
       "request_id": "sssdfk",
-
     }));
   }
 
   sendData(bytes){
     String base64Image = base64Encode(bytes);
-    // print("sending data");
+    print("sending data");
     // print(base64Image);
     this.channel.sink.add(
       json.encode({

@@ -11,10 +11,10 @@ class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailEditingController = TextEditingController();
   final TextEditingController passwordEditingController = TextEditingController();
-
+  late String token;
   final UserService userService = UserService();
 
-  LoginScreen({Key? key}) : super(key: key){
+  LoginScreen({Key? key,required this.token}) : super(key: key){
     print('connecting to socket');
     // SocketIOWrapper sw = SocketIOWrapper();
     print('connected to socket');
@@ -77,7 +77,7 @@ class LoginScreen extends StatelessWidget {
     String email = emailEditingController.text;
     String password = passwordEditingController.text;
 
-    await userService.login(email, password);
+    await userService.login(email, password,token);
 
     var cameras = await availableCameras();
     Navigator.pushReplacement(

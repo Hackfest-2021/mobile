@@ -32,15 +32,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const primaryColor = Color(primaryColorHex);
 
-    var app = MaterialApp(
-      title: 'Safe Rides',
-      theme: ThemeData(
-          splashColor: primaryColor,
-          primarySwatch: createMaterialColor(primaryColor)
-          // Colors.blue,
-          ),
-      home: LoginScreen(),
-    );
 
     return FutureBuilder(
       // Initialize FlutterFire:
@@ -53,10 +44,19 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return app;
+          return MaterialApp(
+      title: 'Safe Rides',
+      theme: ThemeData(
+          splashColor: primaryColor,
+          primarySwatch: createMaterialColor(primaryColor)
+          // Colors.blue,
+          ),
+      home: LoginScreen(token: token ?? "dfds",),
+    );
         }
 
-        return app;
+
+        return Container();
 
         // Otherwise, show something whilst waiting for initialization to complete
         // return Loading();
@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
   initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     this.token = await FirebaseMessaging.instance.getToken();
+    print("ssss");
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'high_importance_channel', // id
