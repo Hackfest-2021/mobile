@@ -11,7 +11,6 @@ import 'screens/login.dart';
 //
 // }
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -32,39 +31,43 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     const primaryColor = Color(primaryColorHex);
 
-
-    return FutureBuilder(
-      // Initialize FlutterFire:
-      future: initializeFirebase(),
-      builder: (context, snapshot) {
-        // Check for errors
-        // if (snapshot.hasError) {
-        //   return SomethingWentWrong();
-        // }
-
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
+    return MaterialApp(
       title: 'Safe Rides',
       theme: ThemeData(
           splashColor: primaryColor,
           primarySwatch: createMaterialColor(primaryColor)
           // Colors.blue,
           ),
-      home: LoginScreen(token: token ?? "dfds",),
-    );
-        }
+      home: Scaffold(
+        body: FutureBuilder(
+          // Initialize FlutterFire:
+          future: initializeFirebase(),
+          builder: (context, snapshot) {
+            // Check for errors
+            // if (snapshot.hasError) {
+            //   return SomethingWentWrong();
+            // }
 
-        return Container();
+            // Once complete, show your application
+            if (snapshot.connectionState == ConnectionState.done) {
+              return LoginScreen(
+                token: token ?? "dfds",
+              );
+            }
 
-        // Otherwise, show something whilst waiting for initialization to complete
-        // return Loading();
-      },
+            return Container();
+
+            // Otherwise, show something whilst waiting for initialization to complete
+            // return Loading();
+          },
+        ),
+      ),
     );
   }
 
   Future<void> setupInteractedMessage() async {
-    RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
       _handleMessage(initialMessage);
@@ -75,7 +78,8 @@ class _MyAppState extends State<MyApp> {
 
   void _handleMessage(RemoteMessage message) {
     // if (message.data['type'] == 'alert') {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PollScreen()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => PollScreen()));
     // }
   }
 
@@ -96,14 +100,15 @@ class _MyAppState extends State<MyApp> {
         FlutterLocalNotificationsPlugin();
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('ic_launcher');
+        AndroidInitializationSettings('ic_launcher');
 
-    const InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid);
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
