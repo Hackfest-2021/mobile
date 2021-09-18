@@ -1,19 +1,27 @@
+import 'package:driver/models/notification_payload.dart';
 import 'package:driver/services/poll_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class PollScreen extends StatelessWidget {
-  final PollService service = PollService();
-
-  late int alertId;
-  late String alertName;
-  late String driverName;
+class PollScreen extends StatefulWidget {
+  late NotificationPayload payload;
 
   // PollScreen({Key? key, required this.alertId, required this.alertName, required this.driverName}) : super(key: key);
-  PollScreen({Key? key, this.alertId = 1, this.alertName = "DROWSY", this.driverName = "Mr. Shakeeb Siddiqui"}) : super(key: key);
+  PollScreen({Key? key, required this.payload}) : super(key: key);
+
+  @override
+  _PollScreenState createState() => _PollScreenState();
+}
+
+class _PollScreenState extends State<PollScreen> {
+  final PollService service = PollService();
 
   @override
   Widget build(BuildContext context) {
+    String driverName = widget.payload.driverName;
+    String alertName = widget.payload.alertName;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -24,18 +32,18 @@ class PollScreen extends StatelessWidget {
             children: <Widget>[
               Expanded(
                   child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 100.0, bottom: 100.0, right: 50.0, left: 50.0),
-                child: Text(
-                    "We have noticed that $driverName is violating for alert type: $alertName, do you think it is true?",
-                    style: const TextStyle(
-                        color: Colors.deepOrange,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30)),
-              )),
+                    padding: const EdgeInsets.only(
+                        top: 100.0, bottom: 100.0, right: 50.0, left: 50.0),
+                    child: Text(
+                        "We have noticed that $driverName is violating for alert type: $alertName, do you think it is true?",
+                        style: const TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30)),
+                  )),
               Padding(
                   padding:
-                      const EdgeInsets.only(bottom: 100.0, right: 50.0, left: 50.0),
+                  const EdgeInsets.only(bottom: 100.0, right: 50.0, left: 50.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
@@ -45,7 +53,7 @@ class PollScreen extends StatelessWidget {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 textStyle: const TextStyle(fontSize: 40)),
-                            onPressed: () => service.poll(alertId, true),
+                            onPressed: () => vote(true),
                             child: const Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: Text('Yes')),
@@ -56,7 +64,7 @@ class PollScreen extends StatelessWidget {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 textStyle: const TextStyle(fontSize: 40)),
-                            onPressed: () => service.poll(alertId, false),
+                            onPressed: () => vote(false),
                             child: const Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: Text('No')),
@@ -68,5 +76,14 @@ class PollScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  vote(bool isTrue) {
+    service.poll(widget.payload.alertId, isTrue);
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      SystemNavigator.pop();
+    }
   }
 }

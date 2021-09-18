@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:driver/screens/poll.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'models/notification_payload.dart';
 import 'screens/login.dart';
 // @dart=2.9
 
@@ -76,6 +79,14 @@ class _MainScreenState extends State<MainScreen> {
   String? token;
 
   @override
+  void initState() {
+    super.initState();
+    if (!mounted) {
+      return;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: initializeFirebase(),
@@ -88,7 +99,9 @@ class _MainScreenState extends State<MainScreen> {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
-            return PollScreen();
+            RemoteMessage message = snapshot.data as RemoteMessage;
+            NotificationPayload payload = NotificationPayload.fromJson(message.data);
+            return PollScreen(payload: payload);
           } else {
             return LoginScreen(token: token ?? "dfds");
           }
@@ -111,27 +124,31 @@ class _MainScreenState extends State<MainScreen> {
     );
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     const InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
 
+      Map<String, dynamic> data = message.data;
+      NotificationPayload payload = NotificationPayload.fromJson(data);
+
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
+            Random().nextInt(10000),
             notification.title,
             notification.body,
             NotificationDetails(
@@ -141,11 +158,24 @@ class _MainScreenState extends State<MainScreen> {
                 channel.description,
                 // other properties...
               ),
-            ));
+            ),
+            payload: payload.toJsonString());
       }
     });
 
     return setupInteractedMessage();
+  }
+
+  Future onSelectNotification(String? data) async {
+    if (data != null) {
+      NotificationPayload payload = NotificationPayload.fromJsonString(data);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PollScreen(
+                    payload: payload,
+                  )));
+    }
   }
 
   Future<RemoteMessage?> setupInteractedMessage() async {
@@ -156,8 +186,14 @@ class _MainScreenState extends State<MainScreen> {
 
   void _handleMessage(RemoteMessage message) {
     // if (message.data['type'] == 'alert') {
+    NotificationPayload payload = NotificationPayload.fromJson(message.data);
+
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => PollScreen()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => PollScreen(
+                  payload: payload,
+                )));
     // }
   }
 }
