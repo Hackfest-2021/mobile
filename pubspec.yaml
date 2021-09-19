@@ -39,3 +39,4 @@ flutter:
     - assets/images/
     - assets/lottie/lottie_shieldv.json
     - assets/lottie/ai.json
+    - assets/lottie/welcome.json

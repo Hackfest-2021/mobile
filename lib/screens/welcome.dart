@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
-class Welcome extends StatefulWidget {
-  const Welcome({Key? key}) : super(key: key);
+import 'package:lottie/lottie.dart';
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _WelcomeState createState() => _WelcomeState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _WelcomeState extends State<Welcome> {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(seconds: (5)),
+      vsync: this,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Lottie.asset(
+        'assets/lottie/welcome.json',
+        controller: _controller,
+        height: MediaQuery.of(context).size.height * 1,
+        animate: true,
+        onLoaded: (composition) {
+          _controller
+            ..duration = composition.duration
+            ..forward().whenComplete(() => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            ));
+        },
+      ),
+    );
   }
 }
