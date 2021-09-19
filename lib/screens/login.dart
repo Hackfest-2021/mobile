@@ -96,7 +96,7 @@ class LoginScreen extends StatelessWidget {
         : Navigator.pushReplacement(
             _formKey.currentContext!,
             MaterialPageRoute(
-                builder: (context) => Welcome(),
+                builder: (context) => WelcomeScreen(),
 
                     ));
   }
