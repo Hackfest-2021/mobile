@@ -23,6 +23,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white ,
       body: Lottie.asset(
         'assets/lottie/welcome.json',
         controller: _controller,

@@ -8,10 +8,9 @@ class PollService {
     receiveTimeout: 5000,
   ));
   poll(int alertId, bool isTrue) async {
-    Response response = await dio.post('trips/passenger/alert/${alertId}/', data: {
+    Response response = await dio.patch('trips/passenger/alert/${alertId}/', data: {
       "is_alert_valid":isTrue
     });
-    print(" api response ${response.statusCode}");
     return response.data;
   }
 }

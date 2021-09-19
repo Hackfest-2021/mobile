@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'models/notification_payload.dart';
-import 'screens/login.dart';
 // @dart=2.9
 
 // Future<void> saveTokenToDatabase(String token) async {
@@ -28,6 +27,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   static const primaryColorHex = 0xFFee424a;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   String? token;
 
@@ -36,6 +36,7 @@ class _MyAppState extends State<MyApp> {
     const primaryColor = Color(primaryColorHex);
 
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Safe Rides',
       theme: ThemeData(
           splashColor: primaryColor,
@@ -43,7 +44,7 @@ class _MyAppState extends State<MyApp> {
           // Colors.blue,
           ),
       home: Scaffold(
-        body: MainScreen(),
+        body: MainScreen(navigatorKey: navigatorKey,),
       ),
     );
   }
@@ -70,7 +71,9 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  late GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  MainScreen({Key? key, required this.navigatorKey}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -171,7 +174,7 @@ class _MainScreenState extends State<MainScreen> {
     if (data != null) {
       NotificationPayload payload = NotificationPayload.fromJsonString(data);
       Navigator.push(
-          context,
+          widget.navigatorKey.currentState!.context,
           MaterialPageRoute(
               builder: (context) => PollScreen(
                     payload: payload,
@@ -190,7 +193,7 @@ class _MainScreenState extends State<MainScreen> {
     NotificationPayload payload = NotificationPayload.fromJson(message.data);
 
     Navigator.pushReplacement(
-        context,
+        widget.navigatorKey.currentState!.context,
         MaterialPageRoute(
             builder: (context) => PollScreen(
                   payload: payload,
