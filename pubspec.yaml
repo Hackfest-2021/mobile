@@ -23,6 +23,8 @@ dependencies:
   firebase_messaging: ^10.0.7
   firebase_core: ^1.6.0
   flutter_local_notifications: ^8.2.0
+  lottie: ^1.1.0
+  shared_preferences: ^2.0.8
 
 
 dev_dependencies:
@@ -35,3 +37,5 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/lottie/lottie_shieldv.json
+    - assets/lottie/ai.json

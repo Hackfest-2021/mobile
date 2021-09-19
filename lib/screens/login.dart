@@ -1,5 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:driver/screens/camera.dart';
+import 'package:driver/screens/poll.dart';
+import 'package:driver/screens/welcome.dart';
 import 'package:driver/services/socket_io_wrapper.dart';
 import 'package:driver/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
@@ -7,18 +9,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
-
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailEditingController = TextEditingController();
-  final TextEditingController passwordEditingController = TextEditingController();
+  final TextEditingController passwordEditingController =
+      TextEditingController();
   late String token;
   final UserService userService = UserService();
 
-  LoginScreen({Key? key,required this.token}) : super(key: key){
+  LoginScreen({Key? key, required this.token}) : super(key: key) {
     print('connecting to socket');
     // SocketIOWrapper sw = SocketIOWrapper();
     print('connected to socket');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,13 +80,25 @@ class LoginScreen extends StatelessWidget {
     String email = emailEditingController.text;
     String password = passwordEditingController.text;
 
-    await userService.login(email, password,token);
+    var userData = await userService.login(email, password, token);
+
+    print(userData);
 
     var cameras = await availableCameras();
-    Navigator.pushReplacement(
-      _formKey.currentContext!,
-      MaterialPageRoute(builder: (context) => CameraScreen(cameras: cameras,)),
-    );
+    (userData["is_staff"])
+        ? Navigator.pushReplacement(
+            _formKey.currentContext!,
+            MaterialPageRoute(
+                builder: (context) => CameraScreen(
+                      cameras: cameras,
+                    )),
+          )
+        : Navigator.pushReplacement(
+            _formKey.currentContext!,
+            MaterialPageRoute(
+                builder: (context) => Welcome(),
+
+                    ));
   }
 }
 

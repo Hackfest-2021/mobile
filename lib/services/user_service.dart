@@ -9,7 +9,7 @@ class UserService {
     receiveTimeout: 5000,
   ));
 
-  login(String email, String password, String token) async {
+  Future<dynamic> login(String email, String password, String token) async {
     print("$email,$password,$token");
     Response response = await dio.post('account/login/', data: {
       'username': email,
@@ -18,6 +18,7 @@ class UserService {
 
     });
     print(" api response ${response.statusCode}");
+  return response.data;
   }
 }
 

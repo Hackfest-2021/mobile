@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:driver/screens/poll.dart';
+import 'package:driver/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -102,9 +103,9 @@ class _MainScreenState extends State<MainScreen> {
             RemoteMessage message = snapshot.data as RemoteMessage;
             NotificationPayload payload = NotificationPayload.fromJson(message.data);
             return PollScreen(payload: payload);
-          } else {
-            return LoginScreen(token: token ?? "dfds");
+
           }
+          return SplashScreen(token: token??"ssss",);
         }
 
         return Container();
