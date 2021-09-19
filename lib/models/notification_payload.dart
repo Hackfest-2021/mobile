@@ -1,14 +1,17 @@
 import 'dart:convert';
 
 class NotificationPayload {
-
   final int alertId;
   final String alertName;
   final String driverName;
 
-  NotificationPayload({required this.alertId, required this.alertName, required this.driverName});
+  NotificationPayload(
+      {required this.alertId,
+      required this.alertName,
+      required this.driverName});
 
-  factory NotificationPayload.fromJsonString(String str) => NotificationPayload.fromJson(jsonDecode(str));
+  factory NotificationPayload.fromJsonString(String str) =>
+      NotificationPayload.fromJson(jsonDecode(str));
 
   String toJsonString() => jsonEncode(_toJson());
 
@@ -27,10 +30,9 @@ class NotificationPayload {
     );
   }
 
-
   Map<String, dynamic> _toJson() => {
-    'alertId': alertId,
-    'alertName': alertName,
-    'driverName': driverName,
-  };
+        'alertId': alertId,
+        'alertName': alertName,
+        'driverName': driverName,
+      };
 }

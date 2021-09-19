@@ -10,8 +10,6 @@
 class SocketIOWrapper {
   var channel;
   SocketIOWrapper() {
-
-
     //  channel = WebSocketChannel.connect(
     //   Uri.parse('ws://192.168.100.53:8000/ws/'),
     // );
@@ -22,7 +20,7 @@ class SocketIOWrapper {
     // }));
   }
 
-  sendData(bytes){
+  sendData(bytes) {
     // String base64Image = base64Encode(bytes);
     // print("sending data");
     // // print(base64Image);
@@ -34,7 +32,4 @@ class SocketIOWrapper {
     //   })
     // );
   }
-
-
-  }
-
+}

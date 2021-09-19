@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 class PollScreen extends StatefulWidget {
   late NotificationPayload payload;
 
-  // PollScreen({Key? key, required this.alertId, required this.alertName, required this.driverName}) : super(key: key);
   PollScreen({Key? key, required this.payload}) : super(key: key);
 
   @override
@@ -19,6 +18,8 @@ class _PollScreenState extends State<PollScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor = Theme.of(context).splashColor;
+
     String driverName = widget.payload.driverName;
     String alertName = widget.payload.alertName;
 
@@ -32,18 +33,18 @@ class _PollScreenState extends State<PollScreen> {
             children: <Widget>[
               Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 100.0, bottom: 100.0, right: 50.0, left: 50.0),
-                    child: Text(
-                        "We have noticed that $driverName is violating for alert type: $alertName, do you think it is true?",
-                        style: const TextStyle(
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30)),
-                  )),
+                padding: const EdgeInsets.only(
+                    top: 100.0, bottom: 100.0, right: 50.0, left: 50.0),
+                child: Text(
+                    "We have noticed that $driverName is violating for alert type: $alertName, do you think it is true?",
+                    style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30)),
+              )),
               Padding(
-                  padding:
-                  const EdgeInsets.only(bottom: 100.0, right: 50.0, left: 50.0),
+                  padding: const EdgeInsets.only(
+                      bottom: 100.0, right: 50.0, left: 50.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,

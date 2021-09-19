@@ -1,8 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:driver/screens/camera.dart';
-import 'package:driver/screens/poll.dart';
 import 'package:driver/screens/welcome.dart';
-import 'package:driver/services/socket_io_wrapper.dart';
 import 'package:driver/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,8 +80,6 @@ class LoginScreen extends StatelessWidget {
 
     var userData = await userService.login(email, password, token);
 
-    print(userData);
-
     var cameras = await availableCameras();
     (userData["is_staff"])
         ? Navigator.pushReplacement(
@@ -96,9 +92,8 @@ class LoginScreen extends StatelessWidget {
         : Navigator.pushReplacement(
             _formKey.currentContext!,
             MaterialPageRoute(
-                builder: (context) => WelcomeScreen(),
-
-                    ));
+              builder: (context) => WelcomeScreen(),
+            ));
   }
 }
 

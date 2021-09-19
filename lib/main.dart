@@ -44,7 +44,9 @@ class _MyAppState extends State<MyApp> {
           // Colors.blue,
           ),
       home: Scaffold(
-        body: MainScreen(navigatorKey: navigatorKey,),
+        body: MainScreen(
+          navigatorKey: navigatorKey,
+        ),
       ),
     );
   }
@@ -104,11 +106,13 @@ class _MainScreenState extends State<MainScreen> {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
             RemoteMessage message = snapshot.data as RemoteMessage;
-            NotificationPayload payload = NotificationPayload.fromJson(message.data);
+            NotificationPayload payload =
+                NotificationPayload.fromJson(message.data);
             return PollScreen(payload: payload);
-
           }
-          return SplashScreen(token: token??"ssss",);
+          return SplashScreen(
+            token: token ?? "ssss",
+          );
         }
 
         return Container();

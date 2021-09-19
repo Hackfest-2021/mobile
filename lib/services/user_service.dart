@@ -10,14 +10,10 @@ class UserService {
 
   Future<dynamic> login(String email, String password, String token) async {
     print("$email,$password,$token");
-    Response response = await dio.post('account/login/', data: {
-      'username': email,
-      'password': password,
-      "fcm_token":token
-
-    });
+    Response response = await dio.post('account/login/',
+        data: {'username': email, 'password': password, "fcm_token": token});
     print(" api response ${response.statusCode}");
-  return response.data;
+    return response.data;
   }
 }
 

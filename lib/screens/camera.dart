@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:driver/services/socket_io_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:image/image.dart'as imglib;
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -25,21 +24,14 @@ class _CameraScreenState extends State<CameraScreen>
     super.initState();
     controller = CameraController(widget.cameras[1], ResolutionPreset.medium);
     controller.initialize().then((_) {
-      print('ddddddddd');
       if (!mounted) {
-        print("retuning");
         return;
-
-
       }
-      // print('sdedfeas');
-
       setState(() {});
 
       const oneSec = Duration(milliseconds: 50);
       timer = Timer.periodic(oneSec, (Timer t) => takePicture());
     });
-
   }
 
   @override
@@ -78,18 +70,13 @@ class _CameraScreenState extends State<CameraScreen>
   }
 
   Future<String> takePicture() async {
-    // print("ddddddddd");
     if (!controller.value.isInitialized || controller.value.isTakingPicture) {
       return "";
     }
 
     try {
       XFile file = await controller.takePicture();
-      file.readAsBytes().then((bytes) => {
-
-
-          this.sw.sendData(bytes)
-      });
+      file.readAsBytes().then((bytes) => {this.sw.sendData(bytes)});
       return file.path;
     } on CameraException catch (e) {
       print('Error: ${e.code}\nError Message: ${e.description}');

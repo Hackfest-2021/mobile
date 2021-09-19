@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   String token;
-   SplashScreen({Key? key, required this.token}) : super(key: key);
+  SplashScreen({Key? key, required this.token}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -64,7 +64,6 @@ class _SplashScreenState extends State<SplashScreen>
                   //     MaterialPageRoute(builder: (context) => LoginScreen(token: widget.token)));
                 });
             },
-
           ),
           Lottie.asset(
             'assets/lottie/lottie_shieldv.json',
@@ -78,17 +77,17 @@ class _SplashScreenState extends State<SplashScreen>
                 ..forward().whenComplete(() async {
                   var data = await getUserData();
                   print(data);
-                  (data=={})?
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Container())):
-
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen(token: widget.token)));
+                  (data == {})
+                      ? Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Container()))
+                      : Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  LoginScreen(token: widget.token)));
                 });
             },
-
           ),
-
         ],
       ),
     );
@@ -97,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen>
   Future<Map<String, dynamic>> getUserData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? user = sharedPreferences.get("user") as String?;
-    var userData = json.decode(user??"{}");
+    var userData = json.decode(user ?? "{}");
     return userData;
   }
 }
