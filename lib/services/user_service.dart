@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
-
-String base_url = "http://192.168.100.53:8000/";
+import 'package:driver/constants.dart';
 
 class UserService {
   final Dio dio = Dio(BaseOptions(
-    baseUrl: base_url,
+    baseUrl: Constants.baseURL,
     connectTimeout: 3000,
     receiveTimeout: 5000,
   ));
